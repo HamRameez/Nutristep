@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriStep | Small Steps. Bigger Results.</title>
+<style>
+  :root{
+    --green:#4f9d5d;
+    --dark:#18352e;
+    --light:#f4f8f2;
+    --white:#ffffff;
+    --muted:#65756f;
+    --border:#dce8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--light);
+    color:var(--dark);
+    line-height:1.6;
+  }
+  nav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 7%;
+  }
+  .logo{font-size:1.45rem;font-weight:800}
+  .logo span{color:var(--green)}
+  nav a{color:var(--dark);text-decoration:none;margin-left:22px;font-weight:600;font-size:.95rem}
+  .hero{
+    min-height:72vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:70px 20px;
+    background:linear-gradient(135deg,#f8fbf6,#e5f1df);
+  }
+  .hero-inner{max-width:760px}
+  .badge{
+    display:inline-block;background:#dcefd5;color:#2f7040;
+    padding:7px 15px;border-radius:999px;font-weight:700;font-size:.85rem;margin-bottom:18px;
+  }
+  h1{font-size:clamp(2.7rem,8vw,5.4rem);line-height:1.02;margin-bottom:15px}
+  h1 span{color:var(--green)}
+  .tagline{font-size:1.25rem;font-weight:700;margin-bottom:12px}
+  .hero p{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto 28px}
+  .btn{
+    display:inline-block;background:var(--green);color:white;text-decoration:none;
+    padding:13px 23px;border-radius:10px;font-weight:700;
+    box-shadow:0 5px 14px rgba(79,157,93,.2);
+  }
+  section{padding:65px 7%}
+  .section-title{text-align:center;font-size:2rem;margin-bottom:10px}
+  .section-sub{text-align:center;color:var(--muted);max-width:650px;margin:0 auto 35px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;max-width:1100px;margin:auto}
+  .card{
+    background:var(--white);border:1px solid var(--border);border-radius:16px;
+    padding:24px;box-shadow:0 4px 15px rgba(24,53,46,.05);
+  }
+  .number{
+    width:40px;height:40px;border-radius:50%;background:#e0f0db;color:#347344;
+    display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px;
+  }
+  .card h3{margin-bottom:7px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .about{
+    background:var(--dark);color:white;text-align:center;
+  }
+  .about p{max-width:720px;margin:0 auto;color:#dce9e4}
+  .tracker{
+    max-width:700px;margin:0 auto;background:white;padding:28px;border-radius:18px;
+    border:1px solid var(--border);
+  }
+  .progress-top{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px}
+  .bar{height:14px;background:#e5eee4;border-radius:20px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--green);transition:.25s}
+  .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0}
+  label{background:#f7faf6;border:1px solid var(--border);padding:11px;border-radius:10px;cursor:pointer}
+  label input{margin-right:8px;accent-color:var(--green)}
+  button{
+    border:0;background:var(--dark);color:white;padding:11px 16px;border-radius:9px;
+    cursor:pointer;font-weight:700;
+  }
+  footer{text-align:center;padding:25px;color:var(--muted);font-size:.9rem}
+  @media(max-width:600px){
+    nav{padding:12px 5%}
+    nav a{margin-left:10px;font-size:.82rem}
+    section{padding:50px 5%}
+    .checks{grid-template-columns:1fr}
+  }
+
+  .weight-box{
+    max-width:760px;margin:0 auto;background:white;padding:28px;border-radius:18px;
+    border:1px solid var(--border);box-shadow:0 4px 15px rgba(24,53,46,.05);
+  }
+  .weight-form{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .weight-form label{background:transparent;border:0;padding:0;cursor:default}
+  .weight-form span{display:block;font-weight:700;margin-bottom:6px}
+  .weight-form input{
+    width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;
+    font-size:1rem;outline:none;
+  }
+  .weight-form input:focus{border-color:var(--green)}
+  .calculate{margin-top:18px;width:100%;font-size:1rem}
+  .results{display:none;margin-top:24px}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .result{
+    background:#f7faf6;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;
+  }
+  .result strong{display:block;font-size:1.35rem;margin-bottom:3px}
+  .result small{color:var(--muted)}
+  .goal-message{margin-top:16px;padding:14px;border-radius:10px;background:#eaf5e7}
+  .weight-note{color:var(--muted);font-size:.85rem;margin-top:14px}
+  @media(max-width:700px){
+    .weight-form,.result-grid{grid-template-columns:1fr}
+  }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Nutri<span>Step</span></div>
+  <div>
+    <a href="#steps">Guide</a>
+    <a href="#weight">Weight</a>
+    <a href="#tracker">Tracker</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="badge">Simple weight management</div>
+    <h1>Nutri<span>Step</span></h1>
+    <div class="tagline">Small Steps. Bigger Results.</div>
+    <p>A simple guide to eating well, staying active and building healthy habits without complicated diets or extreme rules.</p>
+    <a class="btn" href="#steps">Start the Guide</a>
+  </div>
+</header>
+
+<section id="steps">
+  <h2 class="section-title">Your 10-Step Guide</h2>
+  <p class="section-sub">Follow one step at a time. Keep things simple and focus on consistency.</p>
+  <div class="steps">
+    <article class="card"><div class="number">1</div><h3>Set Your Goal</h3><p>Choose what you want to achieve: lose weight, maintain your weight, or reduce body fat.</p></article>
+    <article class="card"><div class="number">2</div><h3>Eat the Right Amount</h3><p>If weight loss is your goal, aim for a small calorie deficit. Avoid extreme diets.</p></article>
+    <article class="card"><div class="number">3</div><h3>Eat More Protein</h3><p>Include foods such as eggs, chicken, fish, lean meat, Greek yoghurt, beans or tofu.</p></article>
+    <article class="card"><div class="number">4</div><h3>Choose Healthy Foods</h3><p>Build meals around protein, fruit and vegetables, carbohydrates and healthy fats.</p></article>
+    <article class="card"><div class="number">5</div><h3>Drink Water</h3><p>Drink water regularly and try to limit sugary drinks.</p></article>
+    <article class="card"><div class="number">6</div><h3>Stay Active</h3><p>Walk more and choose activities you enjoy. Exercise does not have to be complicated.</p></article>
+    <article class="card"><div class="number">7</div><h3>Build Strength</h3><p>Do strength exercises regularly to help build and maintain muscle.</p></article>
+    <article class="card"><div class="number">8</div><h3>Track Progress</h3><p>Check your weight, measurements and fitness progress. Look at changes over time.</p></article>
+    <article class="card"><div class="number">9</div><h3>Sleep Well</h3><p>Aim for around 7–9 hours of sleep each night.</p></article>
+    <article class="card"><div class="number">10</div><h3>Stay Consistent</h3><p>You do not need to be perfect. Get back to your routine after a bad day.</p></article>
+  </div>
+</section>
+
+
+<section id="weight">
+  <h2 class="section-title">Weight Tracker</h2>
+  <p class="section-sub">Enter your details to get a simple snapshot of your current weight and your chosen goal.</p>
+  <div class="weight-box">
+    <div class="weight-form">
+      <label><span>Height (cm)</span><input id="height" type="number" min="100" max="250" placeholder="e.g. 175"></label>
+      <label><span>Current weight (kg)</span><input id="currentWeight" type="number" min="25" max="300" step="0.1" placeholder="e.g. 70"></label>
+      <label><span>Goal weight (kg)</span><input id="goalWeight" type="number" min="25" max="300" step="0.1" placeholder="e.g. 65"></label>
+    </div>
+    <button class="calculate" onclick="calculateWeight()">Calculate My Progress</button>
+
+    <div class="results" id="weightResults">
+      <div class="result-grid">
+        <div class="result"><strong id="bmiValue">—</strong><small>BMI</small></div>
+        <div class="result"><strong id="rangeValue">—</strong><small>General BMI-based weight range</small></div>
+        <div class="result"><strong id="goalValue">—</strong><small>Distance to your goal</small></div>
+      </div>
+      <div class="goal-message" id="goalMessage"></div>
+      <p class="weight-note">BMI is a general screening measure, not a diagnosis. It does not account for muscle mass, body shape or every individual's health needs. If you are unsure what a healthy goal is for you, speak with a healthcare professional.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tracker">
+  <h2 class="section-title">Weekly Progress</h2>
+  <p class="section-sub">Tick off the habits you've completed this week.</p>
+  <div class="tracker">
+    <div class="progress-top"><span>Your progress</span><span id="percent">0%</span></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="checks">
+      <label><input type="checkbox"> Ate balanced meals</label>
+      <label><input type="checkbox"> Drank enough water</label>
+      <label><input type="checkbox"> Got active</label>
+      <label><input type="checkbox"> Did strength training</label>
+      <label><input type="checkbox"> Slept well</label>
+      <label><input type="checkbox"> Stayed consistent</label>
+    </div>
+    <button onclick="resetTracker()">Reset Week</button>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <h2 class="section-title">What is NutriStep?</h2>
+  <p>NutriStep is a simple weight-management guide designed to help people build healthier habits without complicated diets or extreme rules. Our goal is to make weight management simple, realistic and achievable — one small step at a time.</p>
+</section>
+
+<footer>© 2026 NutriStep · Small Steps. Bigger Results.</footer>
+
+<script>
+  const boxes = document.querySelectorAll('.checks input');
+  const fill = document.getElementById('fill');
+  const percent = document.getElementById('percent');
+
+  function updateProgress(){
+    const done = [...boxes].filter(b => b.checked).length;
+    const value = Math.round(done / boxes.length * 100);
+    fill.style.width = value + '%';
+    percent.textContent = value + '%';
+  }
+
+  boxes.forEach(box => box.addEventListener('change', updateProgress));
+
+  function resetTracker(){
+    boxes.forEach(box => box.checked = false);
+    updateProgress();
+  }
+
+  function calculateWeight(){
+    const height = parseFloat(document.getElementById('height').value);
+    const current = parseFloat(document.getElementById('currentWeight').value);
+    const goal = parseFloat(document.getElementById('goalWeight').value);
+
+    if(!height || !current || !goal || height < 100 || height > 250 || current < 25 || goal < 25){
+      alert('Please enter a valid height, current weight and goal weight.');
+      return;
+    }
+
+    const metres = height / 100;
+    const bmi = current / (metres * metres);
+
+    // General adult BMI screening range: 18.5 to 24.9.
+    const minWeight = 18.5 * metres * metres;
+    const maxWeight = 24.9 * metres * metres;
+
+    document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+    document.getElementById('rangeValue').textContent =
+      minWeight.toFixed(1) + '–' + maxWeight.toFixed(1) + ' kg';
+
+    const distance = Math.abs(current - goal);
+    document.getElementById('goalValue').textContent = distance.toFixed(1) + ' kg';
+
+    let message = '';
+    if(Math.abs(current - goal) < 0.05){
+      message = '🎯 You are at your chosen goal weight.';
+    } else if(current > goal){
+      message = 'Your chosen goal is ' + distance.toFixed(1) + ' kg below your current weight. Focus on gradual, sustainable changes.';
+    } else {
+      message = 'Your chosen goal is ' + distance.toFixed(1) + ' kg above your current weight. Focus on gradual, sustainable changes.';
+    }
+
+    document.getElementById('goalMessage').textContent = message;
+    document.getElementById('weightResults').style.display = 'block';
+  }
+
+</script>
+</body>
+</html>
